@@ -1,0 +1,65 @@
+\documentclass[10pt, a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.5cm]{geometry} % Extremely tight margins
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{mathpazo} % Professional, compact font
+
+\begin{document}
+
+% --- Compact Header ---
+\begin{center}
+    \Large\textbf{Expected Key Figure Submission}\\[0.2cm]
+    \normalsize\textbf{Topic 7:} Cost-Aware Machine Learning for Accelerated Drug Discovery\\
+    \textbf{Students:} [Your Name] \& [Partner's Name] \quad \textbf{Supervisor:} Michael Backenköhler\\
+    \textbf{Date:} May 15, 2026
+\end{center}
+\vspace{-0.4cm} % Pull the image up
+
+% --- The Figure ---
+\begin{figure}[h!]
+    \centering
+    % strictly limits image height to leave room for text
+    \includegraphics[height=6.5cm, keepaspectratio]{Honest_Expected_Key_Figure.png}
+    \vspace{-0.2cm}
+    \caption{\textbf{Expected Cost-Accuracy Pareto optimization.} \textit{(Note: Because baseline models are undergoing hyperparameter tuning to resolve overfitting, the y-axis values are simulated projections based on an initial Ridge Regression baseline of 0.416).} The plot demonstrates the intended visualization of the trade-off between computational cost and predictive accuracy. The green star marks the expected optimal sparse pipeline identified via Cost-Weighted Lasso.}
+    \label{fig:pareto}
+\end{figure}
+
+\vspace{-0.6cm} % Pull the text up closer to the image
+
+% --- The 6 Required Questions ---
+\section*{Detailed Figure Description}
+\vspace{-0.2cm}
+
+\noindent\textbf{1. What is the key finding you want to communicate?}\\
+An exhaustive virtual screening workflow is unnecessary. By applying a Cost-Weighted $L_1$ penalty, we can identify a ``Pareto Optimal'' pipeline of computationally cheap docking algorithms that achieves near-maximum accuracy while drastically reducing overall computational cost compared to using exhaustive tools alone.
+
+\vspace{0.2cm}
+\noindent\textbf{2. What is on the x-axis?}\\
+Total Computational Cost per molecule (in seconds). Because the cost discrepancy between tools is massive (0.31s for CNNscore vs. 407.5s for DiffDock), this axis uses a logarithmic scale to clearly visualize both fast and slow algorithms.
+
+\vspace{0.2cm}
+\noindent\textbf{3. What is on the y-axis?}\\
+Predictive Accuracy, quantified by the Pearson correlation coefficient ($r$), which measures how closely the ML model's predicted binding affinity matches the actual lab-tested biological affinity (\texttt{true\_value}).
+
+\vspace{0.2cm}
+\noindent\textbf{4. What does the legend show?}
+\begin{itemize}[noitemsep, topsep=0pt, leftmargin=*]
+    \item \textbf{Grey Dots:} Individual docking algorithms and sub-optimal scoring pipelines.
+    \item \textbf{Red Dashed Line:} The Pareto Frontier connecting the non-dominated subsets of tools.
+    \item \textbf{Green Star:} Our proposed ``Optimal Pipeline'' selected by the Lasso regularizer.
+\end{itemize}
+
+\vspace{0.2cm}
+\noindent\textbf{5. What is the caption?}\\
+Provided directly beneath Figure \ref{fig:pareto}. It explains the trade-off, highlights the optimal pipeline, and includes a disclaimer regarding the projected nature of the current accuracy values.
+
+\vspace{0.2cm}
+\noindent\textbf{6. What data processing is needed to create it?}\\
+Raw docking logs are aggregated by molecule ID (taking \texttt{min}/\texttt{max} based on the tool's physical metric). Failed poses receive worst-case imputation. Outliers (e.g., HYDE engine failures) are mitigated via IQR clipping and Robust Scaling. Finally, data is fed into a Cost-Weighted Lasso regression, which iteratively forces the weights of expensive, low-impact tools to zero.
+
+\end{document}
