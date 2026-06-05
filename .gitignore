@@ -1,0 +1,6 @@
+*.pdf
+*.png
+*.jpg
+experiments/
+*.tex
+*.zip
